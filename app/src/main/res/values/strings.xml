@@ -2,4 +2,8 @@
     <string name="app_name">Drawing-Application</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="choose_an_image">CHOOSE AN IMAGE</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
