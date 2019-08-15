@@ -1,5 +1,6 @@
 package com.jamjan.drawing_application;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,16 +12,25 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+
+import java.util.ArrayList;
+
 
 public class DrawView extends android.support.v7.widget.AppCompatImageView {
 
-    private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
+    public static final int MAX_STROKE_WIDTH = 50;
 
+    private SeekBar seekBar;
+    private float mX, mY;
     private Canvas canvas = null;
     private Bitmap mask = null;
-    private Path path;
+    private Path active_path;
     private Paint paint;
+
+    // Save the paths in the arraylist to provide redo and undo functionality
+    private ArrayList<Path> myPaths;
 
     public DrawView(Context context) {
         super(context);
@@ -38,7 +48,26 @@ public class DrawView extends android.support.v7.widget.AppCompatImageView {
     }
 
     private void init() {
-        this.path = new Path();
+        seekBar = ((Activity) getContext()).findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Do nothing
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Do nothing
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                DrawView.this.paint.setStrokeWidth(MAX_STROKE_WIDTH * ((float)seekBar.getProgress() / 100));
+            }
+        });
+
+        myPaths = new ArrayList<>();
         setupPaint();
         this.setBackgroundColor(Color.RED);
         this.setAlpha(0.8f);
@@ -48,6 +77,7 @@ public class DrawView extends android.support.v7.widget.AppCompatImageView {
                         ViewGroup.LayoutParams.WRAP_CONTENT)
         );
     }
+
 
     private void setupPaint() {
         this.paint = new Paint();
@@ -59,12 +89,14 @@ public class DrawView extends android.support.v7.widget.AppCompatImageView {
         this.paint.setStrokeWidth(10);
     }
 
+
     public void setMaskSize(int width, int height) {
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         mask = Bitmap.createBitmap(width, height, conf);
         canvas = new Canvas(mask);
         this.setImageBitmap(mask);
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -90,31 +122,37 @@ public class DrawView extends android.support.v7.widget.AppCompatImageView {
 
 
 
-
     private void touch_start(float x, float y) {
-        path.reset();
-        path.moveTo(x, y);
-        mX = x;
-        mY = y;
-    }
-
-
-    private void touch_move(float x, float y) {
-        float dx = Math.abs(x - mX);
-        float dy = Math.abs(y - mY);
-        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            path.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
+        if(active_path == null) {
+            active_path = new Path();
+            active_path.moveTo(x, y);
             mX = x;
             mY = y;
         }
     }
 
 
+    private void touch_move(float x, float y) {
+        if(active_path != null) {
+            float dx = Math.abs(x - mX);
+            float dy = Math.abs(y - mY);
+            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                active_path.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                mX = x;
+                mY = y;
+            }
+        }
+    }
+
+
     private void touch_up() {
-        path.lineTo(mX, mY);
-        // commit the path to our offscreen
-        canvas.drawPath(path,  paint);
-        // kill this so we don't double draw
-        path.reset();
+        if(active_path != null) {
+            active_path.lineTo(mX, mY);
+            // commit the path to our offscreen
+            canvas.drawPath(active_path, paint);
+            // kill this so we don't double draw
+            myPaths.add(active_path);
+            active_path = null;
+        }
     }
 }
