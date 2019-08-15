@@ -99,8 +99,8 @@ public class DrawView extends android.support.v7.widget.AppCompatImageView {
 
         myPaths = new ArrayList<>();
         setupPaint();
-        this.setBackgroundColor(Color.RED);
-        this.setAlpha(0.8f);
+        //this.setBackgroundColor(Color.RED);
+        //this.setAlpha(0.8f);
         this.setScaleType(ScaleType.FIT_XY);
         this.setLayoutParams(new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
