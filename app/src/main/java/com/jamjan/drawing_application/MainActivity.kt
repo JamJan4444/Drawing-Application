@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 my_image.setScaleType(ImageView.ScaleType.FIT_XY)
                 my_image.setImageBitmap(bitmap)
 
-                val drawView : DrawView? = DrawView(this)
+                val drawView : DrawView? = DrawView(this, bitmap)
                 drawView!!.setMaskSize(bitmap!!.width, bitmap!!.height)
 
                 findViewById<RelativeLayout>(R.id.fragment_drawing_drawing_layout)?.addView(drawView)

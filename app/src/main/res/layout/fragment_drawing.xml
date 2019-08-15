@@ -3,27 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center"
     tools:context=".DrawingFragment">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SAVE" />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true" />
-
-    </RelativeLayout>
 
 
     <RelativeLayout
@@ -37,13 +19,26 @@
             android:layout_height="wrap_content"
             android:contentDescription="TODO">
         </ImageView>
-
-
-        <!--<ImageView
-            android:id="@+id/fragment_drawing_draw_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#CCFF0000" >
-        </ImageView>-->
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true">
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/fragment_drawing_save_button"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:text="SAVE" />
+    </LinearLayout>
 </RelativeLayout>
