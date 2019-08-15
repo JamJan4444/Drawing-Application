@@ -11,6 +11,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.provider.MediaStore
 import android.widget.ImageView
+import android.widget.RelativeLayout
 
 
 const val PICK_IMAGE = 1
@@ -41,6 +42,15 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE)
         }
     }
+
+
+
+//    fun saveImage() {
+//        var myDrawLayout : RelativeLayout = findViewById(R.id.fragment_drawing_drawing_layout)
+//        myDrawLayout.setDrawingCacheEnabled(true)
+//        result_bitmap = Bitmap.createBitmap(myDrawLayout.getDrawingCache());
+//        layout.setDrawingCacheEnabled(false);
+//    }
 
 
 
