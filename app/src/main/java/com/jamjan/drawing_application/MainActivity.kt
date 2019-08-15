@@ -68,7 +68,9 @@ class MainActivity : AppCompatActivity() {
                 setContentView(R.layout.fragment_drawing)
 
                 // Load the bitmap into the fragment
-                findViewById<ImageView>(R.id.fragment_drawing_background_image_view)?.setImageBitmap(bitmap)
+                val my_image = findViewById<ImageView>(R.id.fragment_drawing_background_image_view)
+                my_image.setScaleType(ImageView.ScaleType.FIT_XY)
+                my_image.setImageBitmap(bitmap)
 
                 val drawView : DrawView? = DrawView(this)
                 drawView!!.setMaskSize(bitmap!!.width, bitmap!!.height)
